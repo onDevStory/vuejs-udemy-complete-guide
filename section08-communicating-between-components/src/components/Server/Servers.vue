@@ -1,14 +1,14 @@
 <template>
 	<div class="col-xs-12 col-sm-6">
 		<ul class="list-group">
-			<app-server v-for="server in servers" :server="server"></app-server>
+			<app-server v-for="(server, idx) in servers" :server="server" @click.native="clickServer(idx)"></app-server>
 		</ul>
 	</div>
 </template>
 
 <script>
 import Server from './Server.vue';
-import {evt} from './serverEvt';
+import {evt} from '../../event';
 
 export default {
 	components: {
@@ -34,7 +34,12 @@ export default {
 		}, 5000);
 	},
 	mounted: function() {
-		evt.initServerDetail(this.servers[0]); // init ServerDetails
+		this.clickServer(0); // init ServerDetails
+	},
+	methods: {
+		clickServer(idx) {
+			evt.clickServer(this.servers[idx]);
+		}
 	}
 }
 </script>

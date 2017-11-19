@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {evt} from './serverEvt';
+import {evt} from '../../event';
 
 export default {
 	data: function(){
@@ -15,9 +15,6 @@ export default {
 		}
 	},
 	created: function() {
-		evt.$on('initServerDetail', (server) => {
-			this.server = server;
-		});
 		evt.$on('clickServer', (server) => {
 			this.server = server;
 		});

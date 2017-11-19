@@ -1,11 +1,11 @@
 <template>
-	<li class="list-group-item" @click="clickServer(server)">
+	<li class="list-group-item">
 		Server #{{server.id}} {{updated}}
 	</li>
 </template>
 
 <script>
-import {evt} from './serverEvt';
+import {evt} from '../../event';
 
 export default {
 	props: {
@@ -14,11 +14,6 @@ export default {
 	data: function() {
 		return {
 			updated: ''
-		}
-	},
-	methods: {
-		clickServer: function(server) {
-			evt.clickServer(server);
 		}
 	},
 	watch: {
