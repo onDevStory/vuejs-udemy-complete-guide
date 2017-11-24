@@ -30,19 +30,14 @@ export default {
         username: '',
         email: ''
       },
-      users: []
+      users: [],
+      resource: {}
     }
   },
   methods: {
     submit() {
-      // {filename}.json
-      // 주의: '/data.json' 으로 하면 domain/data.json 으로 인식함
-      this.$http.post('data.json', this.user)
-        .then(response => {
-          console.warn(response);
-        }, error => {
-          console.warn(error);
-        });
+      // https://github.com/pagekit/vue-resource/blob/develop/docs/resource.md
+      this.resource.save({}, this.user);
     },
     fetchData() {
       this.$http.get('data.json')
@@ -65,6 +60,10 @@ export default {
           // this.users = data;
         })
     }
+  },
+  created() {
+    // https://github.com/pagekit/vue-resource/blob/develop/docs/resource.md
+    this.resource = this.$resource('data.json');
   }
 }
 </script>
