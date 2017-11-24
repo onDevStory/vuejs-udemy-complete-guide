@@ -36,7 +36,8 @@ export default {
   methods: {
     submit() {
       // {filename}.json
-      this.$http.post('https://vuejs-http-a88d5.firebaseio.com/data.json', this.user)
+      // 주의: '/data.json' 으로 하면 domain/data.json 으로 인식함
+      this.$http.post('data.json', this.user)
         .then(response => {
           console.warn(response);
         }, error => {
@@ -44,7 +45,7 @@ export default {
         });
     },
     fetchData() {
-      this.$http.get('https://vuejs-http-a88d5.firebaseio.com/data.json')
+      this.$http.get('data.json')
       .then(response => {
           console.warn('response: {}', response); // Response 객체
 
