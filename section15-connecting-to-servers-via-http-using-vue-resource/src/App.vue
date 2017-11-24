@@ -13,6 +13,7 @@
         </div>
         <button class="btn btn-primary" @click="submit ">Submit</button>
         <hr>
+        <input type="text" class="form-control" v-model="node">
         <button class="btn btn-primary" @click="fetchData">Get Data</button>
         <ul class="list-group">
           <li class="list-group-item" v-for="u in users">{{u.username}} - {{u.email}}</li>
@@ -31,7 +32,8 @@ export default {
         email: ''
       },
       users: [],
-      resource: {}
+      resource: {},
+      node: 'data'
     }
   },
   methods: {
@@ -41,13 +43,9 @@ export default {
       this.resource.saveAlt(this.user);
     },
     fetchData() {
-      this.$http.get('data.json')
-      .then(response => {
-          console.warn('response: {}', response); // Response 객체
-
-          const promiseObj = response.json();
-          console.warn('response.json(): {}', promiseObj); // PromiseObj 객체
-          return promiseObj; // promiseValue 를 전달
+      this.resource.getData({node: this.node})
+        .then(response => {
+          return response.json(); // promiseValue 를 전달
         })
         .then(data => {
           const resultArray = [];
@@ -55,10 +53,6 @@ export default {
             resultArray.push(data[key]);
           }
           this.users = resultArray;
-
-          console.warn('data: {}', data);
-          // 아래처럼 해도 리스팅이 되기는 함
-          // this.users = data;
         })
     }
   },
@@ -67,11 +61,14 @@ export default {
       saveAlt: {
         method: 'POST',
         url: 'alternative.json'
+      },
+      getData: {
+        method: 'GET'
       }
     };
     // https://github.com/pagekit/vue-resource/blob/develop/docs/resource.md
     // resource(url, [params], [actions], [options])
-    this.resource = this.$resource('data.json', {}, customActions);
+    this.resource = this.$resource('{node}.json', {}, customActions);
   }
 }
 </script>
