@@ -12,6 +12,11 @@
           <input type="text" class="form-control" v-model="user.email">
         </div>
         <button class="btn btn-primary" @click="submit ">Submit</button>
+        <hr>
+        <button class="btn btn-primary" @click="fetchData">Get Data</button>
+        <ul class="list-group">
+          <li class="list-group-item" v-for="u in users">{{u.username}} - {{u.email}}</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -24,18 +29,40 @@ export default {
       user: {
         username: '',
         email: ''
-      }
+      },
+      users: []
     }
   },
   methods: {
     submit() {
       // {filename}.json
       this.$http.post('https://vuejs-http-a88d5.firebaseio.com/data.json', this.user)
+        .then(response => {
+          console.warn(response);
+        }, error => {
+          console.warn(error);
+        });
+    },
+    fetchData() {
+      this.$http.get('https://vuejs-http-a88d5.firebaseio.com/data.json')
       .then(response => {
-        console.log(response);
-      }, error => {
-        console.log(error);
-      });
+          console.warn('response: {}', response); // Response 객체
+
+          const promiseObj = response.json();
+          console.warn('response.json(): {}', promiseObj); // PromiseObj 객체
+          return promiseObj; // promiseValue 를 전달
+        })
+        .then(data => {
+          const resultArray = [];
+          for (let key in data) {
+            resultArray.push(data[key]);
+          }
+          this.users = resultArray;
+
+          console.warn('data: {}', data);
+          // 아래처럼 해도 리스팅이 되기는 함
+          // this.users = data;
+        })
     }
   }
 }
