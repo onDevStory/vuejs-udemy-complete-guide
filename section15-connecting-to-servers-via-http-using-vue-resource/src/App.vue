@@ -37,7 +37,8 @@ export default {
   methods: {
     submit() {
       // https://github.com/pagekit/vue-resource/blob/develop/docs/resource.md
-      this.resource.save({}, this.user);
+      // this.resource.save({}, this.user);
+      this.resource.saveAlt(this.user);
     },
     fetchData() {
       this.$http.get('data.json')
@@ -62,8 +63,15 @@ export default {
     }
   },
   created() {
+    const customActions = {
+      saveAlt: {
+        method: 'POST',
+        url: 'alternative.json'
+      }
+    };
     // https://github.com/pagekit/vue-resource/blob/develop/docs/resource.md
-    this.resource = this.$resource('data.json');
+    // resource(url, [params], [actions], [options])
+    this.resource = this.$resource('data.json', {}, customActions);
   }
 }
 </script>
